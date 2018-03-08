@@ -87,7 +87,7 @@ chili = 'SCL'
 costa = 'SJO'
 mongolia = 'ULN'
 thai = 'BKK'
-marrakech = 'RAK'
+marrakech = 'RAK' #Morroco
 barcelona = 'BCN'
 istanbul = 'IST'
 croacia = 'ZAG'
@@ -354,5 +354,6 @@ If blocked from Delta turn off computer for a few minutes then retry
 '''
 for city in nationalCityList:
     runAlaskaWithThreads(city)
+    runDeltaWithThreads(city)
 for city in interNationalCityList:
     runDeltaWithThreads(city)
