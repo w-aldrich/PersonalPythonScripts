@@ -160,6 +160,9 @@ def navigateAlaskaAirlines(gotToCity, seleniumDriver):
     submitButton.click() #Submit your search results
     time.sleep(5) # wait for page to load
     selectLowPrice = Select(seleniumDriver.find_element_by_id('SortBy0')) #Sort by price
+    actions = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
+    actions.move_to_element(selectLowPrice)
+    actions.click(selectLowPrice)
     selectLowPrice.select_by_visible_text('Price')
     time.sleep(2)
     html = seleniumDriver.page_source #grab the html from the webpage
@@ -199,9 +202,9 @@ def printOutInformationAlaska(goThroughFlightInfo, cityGoingTo):
         prev = string
     print "\nALASKA AIRLINES: The price for: "+ weekInAdvance + " to " + threeDayTrip + " from " + slc + " to " + cityGoingTo + " is: " + cost + "\nThe Flight Time is: " + flightTime
     if stops == '':
-        print "This flight has: 0 stops"
+        print "This flight has: 0 stops\n"
     else:
-        print "This flight has: " + stops
+        print "This flight has: " + stops + "\n"
 
 '''
 This allows the opportunity for multi-threading with Alaska Airlines
@@ -220,10 +223,10 @@ def runAlaskaWithThreads(city):
         printOutInformationAlaska(navigateAlaskaAirlines(city, seleniumDriver), city)
     except NoSuchElementException:
         seleniumDriver.close()
-        print "\nAlaska Airlines Unable to find: " + city
+        print "\nAlaska Airlines Unable to find: " + city + "\n"
     except AttributeError:
         seleniumDriver.close()
-        print "\nAlaska Airlines Unable to find: " + city
+        print "\nAlaska Airlines Unable to find: " + city + "\n"
 
 '''
 This will navigate www.delta.com
@@ -232,11 +235,21 @@ The large wait times must happen so that the page actually loads up
 '''
 def navigateDelta(city, seleniumDriver):
     time.sleep(3)
-    seleniumDriver.find_element_by_id('destinationCity').send_keys(city)
+    destination = seleniumDriver.find_element_by_id('destinationCity')
+    destination.send_keys(city)
+    destination.send_keys(Keys.TAB)
+    time.sleep(3)
+    depart = seleniumDriver.find_element_by_id('departureDate')
+    if city in nationalCityList:
+        depart.send_keys(weekInAdvance)
+    else:
+        depart.send_keys(tripInTwoMonthsDepart)
     # time.sleep(2)
-    seleniumDriver.find_element_by_id('departureDate').send_keys(tripInTwoMonthsDepart)
-    # time.sleep(2)
-    seleniumDriver.find_element_by_id('returnDate').send_keys(tripInTwoMonthsReturn)
+    returnDate = seleniumDriver.find_element_by_id('returnDate')
+    if city in nationalCityList:
+        returnDate.send_keys(threeDayTrip)
+    else:
+        returnDate.send_keys(tripInTwoMonthsReturn)
     # time.sleep(2)
     select = Select(seleniumDriver.find_element_by_id('paxCount')) #Select 2 adults for price
     # time.sleep(2)
@@ -354,6 +367,7 @@ If blocked from Delta turn off computer for a few minutes then retry
 '''
 for city in nationalCityList:
     runAlaskaWithThreads(city)
+for city in nationalCityList: #must run Delta separately to get through Alaska quickly
     runDeltaWithThreads(city)
 for city in interNationalCityList:
     runDeltaWithThreads(city)
