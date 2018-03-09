@@ -215,8 +215,8 @@ def runAlaskaWithThreads(city):
     # options = Options()
     # options.add_argument("--headless")
     # options.add_argument('--disable-gpu')
-    # seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver', chrome_options=options)
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    # seleniumDriver = webdriver.Chrome(executable_path=r'/', chrome_options=options)
+    seleniumDriver = webdriver.Chrome(executable_path=r'/')
     seleniumDriver.get('https://www.alaskaair.com/')
     time.sleep(2)
     try:
@@ -344,7 +344,7 @@ BE CAREFUL!!!! If multithreading Delta will ban you if using more than
 two threads. THIS IS STILL SKETCHY. Must restart computer to be able to access site again.
 '''
 def runDeltaWithThreads(city):
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/')
     seleniumDriver.get('https://www.delta.com/')
     try:
         printDelta(navigateDelta(city, seleniumDriver), city)
@@ -359,7 +359,7 @@ def runDeltaWithThreads(city):
 Uncomment below incase of Robot message from Alaska Airlines
 If blocked from Delta turn off computer for a few minutes then retry
 '''
-# seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+# seleniumDriver = webdriver.Chrome(executable_path=r'/')
 # seleniumDriver.get('https://www.alaskaair.com')
 
 '''
