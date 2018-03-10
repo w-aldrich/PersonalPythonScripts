@@ -12,4 +12,4 @@ This is a webcrawler to grab only a few headlines from two news sources that I l
 This program utilizes the shell and BeautifulSoup to run. 
 
 ## concertsWebScraper.py
-This is a webscraper to grab the concerts that are going on in Salt Lake City. Simple Scrape using curl and BeautifulSoup.
+This is a webscraper to grab the concerts that are going on from SmithTix. Simple Scrape using curl and BeautifulSoup.
