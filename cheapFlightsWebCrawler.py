@@ -140,6 +140,7 @@ def navigateAlaskaAirlines(gotToCity, seleniumDriver):
     departureDate.clear() #clear the date in the departure date and send a week in advance
     # for letter in weekInAdvance:
     #     departureDate.send_keys(letter)
+    #     time.sleep(.15)
     departureDate.send_keys(weekInAdvance)
     departureDate.send_keys(Keys.TAB)
     # time.sleep(1)
@@ -148,6 +149,7 @@ def navigateAlaskaAirlines(gotToCity, seleniumDriver):
     returnDate.clear()
     # for letter in threeDayTrip:
     #     returnDate.send_keys(letter)
+    #     time.sleep(.15)
     returnDate.send_keys(threeDayTrip)
     returnDate.send_keys(Keys.TAB)
     select = Select(seleniumDriver.find_element_by_id('adultCount')) #Select 2 adults for price
@@ -244,19 +246,16 @@ def navigateDelta(city, seleniumDriver):
         depart.send_keys(weekInAdvance)
     else:
         depart.send_keys(tripInTwoMonthsDepart)
-    # time.sleep(2)
     returnDate = seleniumDriver.find_element_by_id('returnDate')
     if city in nationalCityList:
         returnDate.send_keys(threeDayTrip)
     else:
         returnDate.send_keys(tripInTwoMonthsReturn)
-    # time.sleep(2)
     select = Select(seleniumDriver.find_element_by_id('paxCount')) #Select 2 adults for price
-    # time.sleep(2)
     select.select_by_visible_text('2')
     # seleniumDriver.find_element_by_id('paxCount-button').click() #number of adults button
     # time.sleep(3)
-    # seleniumDriver.find_element_by_id('ui-id-19').click() #2 adults
+    # seleniumDriver.find_element_by_id('ui-id-19').click() #2 adults has been ui-id-10
     # time.sleep(2)
     seleniumDriver.find_element_by_id('findFlightsSubmit').click()
     time.sleep(10)
@@ -286,8 +285,6 @@ def printDelta(cheapestFlight, cityGoingTo):
     '''
     This section splits the page source to get the table of flexible dates
     '''
-    if(cheapestFlight == "Delta could not find the flight you were looking for"):
-        "Delta could not find the flight you were looking for: " + cityGoingTo
     for blah in cheapestFlight:
         if startPoint == True:
             if "<" not in blah:
@@ -336,6 +333,8 @@ def printDelta(cheapestFlight, cityGoingTo):
     '''
     for information in lowestFairs:
         print "DELTA Options: The lowest fair for " + cityGoingTo + " is: " + information
+    if lowestFairs == []:
+        print "Delta could not find the flight you were looking for: " + cityGoingTo
     print "\n"
 
 '''
