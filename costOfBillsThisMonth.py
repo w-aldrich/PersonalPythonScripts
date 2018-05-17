@@ -47,6 +47,7 @@ def powerBill():
             break
         if "due last" in blah:
             found = True
+            
 '''
 This section is for Quest Star Gas
 '''
