@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 '''
 This program will log into:
 Rocky Mountain Power
-CenturyLink
+CenturyLink 
 Quest Star Gas
 and Precept Properties.
 It will then grab how much is owed to each company and print it in the console
@@ -47,7 +47,7 @@ def powerBill():
             break
         if "due last" in blah:
             found = True
-            
+
 '''
 This section is for Quest Star Gas
 '''
