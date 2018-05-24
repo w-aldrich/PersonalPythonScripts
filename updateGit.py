@@ -9,8 +9,6 @@ home = os.environ['HOME']
 # navigate to home directory
 homeDir = os.chdir(home)
 
-print ("\n\n")
-
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 # Get folders in current directory
@@ -30,11 +28,16 @@ for f in folders:
             repo = Repo(insideFile)
             # check if anything is untracked
             untracked = repo.untracked_files
+            changedFiles = [repo.index.diff(None)]
             # if there is something untracked...
             # add everything to be commited
-            # commit message
-            if len(untracked) >= 1:
+            # commit message is "Automatic Backup via python scripts"
+            if len(untracked) >= 1 or len(changedFiles) >=1:
+                print (f + " Has untracked files that will be commited.")
                 repo.git.add(A=True)
                 index = repo.index
                 index.commit("Automatic Backup via python scripts")
                 repo.git.push('origin')
+                print (f + " Has been commited and pushed to github.")
+
+print ("All git accounts have been updated")
