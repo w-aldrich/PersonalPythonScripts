@@ -28,7 +28,7 @@ for f in folders:
             repo = Repo(insideFile)
             # check if anything is untracked or changed
             untracked = repo.untracked_files
-            changedFiles = [repo.index.diff(None)]
+            changedFiles = [repo.index.diff()]
             # if there is something untracked...
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
