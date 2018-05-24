@@ -28,7 +28,7 @@ for f in folders:
             repo = Repo(insideFile)
             # check if anything is untracked or changed
             untracked = repo.untracked_files
-            changedFiles = [repo.index.diff()]
+            changedFiles = [repo.index.diff(None)]
 
             for blah in changedFiles:
                 print (blah)
@@ -37,7 +37,7 @@ for f in folders:
             # if there is something untracked...
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
-            if len(untracked) >= 1 or len(changedFiles) >=1:
+            if len(untracked) >= 1 or changedFiles[0] != None:
                 print (f + " Has untracked files that will be commited.")
                 repo.git.add(A=True)
                 index = repo.index
