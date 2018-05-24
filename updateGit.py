@@ -26,7 +26,7 @@ for f in folders:
         # if the files have a .git file they are a repository
         if ".git" in x:
             repo = Repo(insideFile)
-            # check if anything is untracked
+            # check if anything is untracked or changed
             untracked = repo.untracked_files
             changedFiles = [repo.index.diff(None)]
             # if there is something untracked...
