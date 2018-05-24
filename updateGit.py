@@ -35,9 +35,12 @@ for f in folders:
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print (f + " has untracked files that will be commited.")
+                # add everything
                 repo.git.add(A=True)
                 index = repo.index
+                # commit
                 index.commit("Automatic Backup via python scripts")
+                # Push 
                 repo.git.push('origin')
                 print (f + " has been commited and pushed to github.")
 
