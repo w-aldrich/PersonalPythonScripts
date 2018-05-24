@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 '''
 This program will log into:
 Rocky Mountain Power
-CenturyLink 
+CenturyLink
 Quest Star Gas
 and Precept Properties.
 It will then grab how much is owed to each company and print it in the console
@@ -26,7 +26,7 @@ internetpass = getpass.getpass("InternetPassword: ") #For Century Link
 This section is for Rocky Mountain Power
 '''
 def powerBill():
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://www.rockymountainpower.net/index.html')
     seleniumDriver.find_element_by_id('nav-account-anchor').click()
     usernameSel = seleniumDriver.find_element_by_id('cams_cb_username')
@@ -37,7 +37,7 @@ def powerBill():
     time.sleep(8)
     html = seleniumDriver.page_source
     seleniumDriver.close()
-    soup = BeautifulSoup(html, "html5lib")
+    soup = BeautifulSoup(html, "html.parser")
     soup = soup.prettify()
     elements = soup.split("\n")
     found = False
@@ -52,7 +52,7 @@ def powerBill():
 This section is for Quest Star Gas
 '''
 def gasBill():
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://www.questargas.com/WSS/servlet/CMMainControllerServlet?action=CMSignInAction')
     usernameSel = seleniumDriver.find_element_by_name('UserID')
     usernameSel.send_keys(user)
@@ -62,7 +62,7 @@ def gasBill():
     # time.sleep(7)
     html = seleniumDriver.page_source
     seleniumDriver.close()
-    soup = BeautifulSoup(html, "html5lib")
+    soup = BeautifulSoup(html, "html.parser")
     soup = soup.prettify()
     elements = soup.split("\n")
     found = False
@@ -82,7 +82,7 @@ def gasBill():
 This section is for Century Link
 '''
 def internetBill():
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://eam.centurylink.com/eam/login.do')
     usernameSel = seleniumDriver.find_element_by_id('USER')
     usernameSel.send_keys(user)
@@ -92,7 +92,7 @@ def internetBill():
     # time.sleep(5)
     html = seleniumDriver.page_source
     seleniumDriver.close()
-    soup = BeautifulSoup(html, "html5lib")
+    soup = BeautifulSoup(html, "html.parser")
     mydivs = soup.find_all("div", class_='myBill__balance_due_large')
     moneyList = []
     for blah in mydivs:
@@ -107,7 +107,7 @@ def internetBill():
 This section is for Precept Properties
 '''
 def rentBill():
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://preceptproperty.managebuilding.com/Resident/PublicPages/Home.aspx?ReturnUrl=%2fResident')
     usernameSel = seleniumDriver.find_element_by_id('_ctl0_contentPlaceHolderBody_ucResidentLogin_txtUserName')
     usernameSel.send_keys(email)
@@ -117,7 +117,7 @@ def rentBill():
     time.sleep(3)
     html = seleniumDriver.page_source
     seleniumDriver.close()
-    soup = BeautifulSoup(html, "html5lib")
+    soup = BeautifulSoup(html, "html.parser")
     soup = soup.prettify()
     elements = soup.split("\n")
     found = False

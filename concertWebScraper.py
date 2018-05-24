@@ -3,7 +3,7 @@ import subprocess
 from bs4 import BeautifulSoup
 
 smithstix = subprocess.check_output("curl -s \"https://www.smithstix.com/music\"", shell=True)
-soup = BeautifulSoup(smithstix, "html5lib")
+soup = BeautifulSoup(smithstix, "html.parser")
 events = soup.find_all("div", {"class": "event-row"})
 
 
@@ -28,7 +28,7 @@ for allEvents in events:
     except AttributeError:
         continue
 
-    # Print the text needed 
+    # Print the text needed
     beginFlag = False
     for char in getPrice:
         if char == '>':

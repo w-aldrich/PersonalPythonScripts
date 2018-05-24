@@ -10,7 +10,7 @@ for the headlines I care about looking at
 
 # NYTIMES
 htmlNytimes = subprocess.check_output("curl -s \"https://www.nytimes.com\"", shell=True)
-soup = BeautifulSoup(htmlNytimes, "html5lib")
+soup = BeautifulSoup(htmlNytimes, "html.parser")
 nytimesHeadlines = soup.find_all('a')
 
 nytimesText = []
@@ -29,18 +29,21 @@ for headline in nytimesHeadlines:
         if "Editorial:" in headline or headlineCount == 10:
             break
         nytimesText.append(headline)
-        headlineCount += 1
+        # headlineCount += 1
 
 print "\nNEW YOURK TIMES TOP 10 HEADLINES"
 
 for blah in nytimesText:
+    headlineCount += 1
     print str(headlineCount) + ": " + blah
+    if headlineCount == 10:
+        break
 
 
 
 # ALJAZEERA
 htmlAljazeera = subprocess.check_output("curl -s \"https://www.aljazeera.com/news/\"", shell=True)
-soup = BeautifulSoup(htmlAljazeera, "html5lib")
+soup = BeautifulSoup(htmlAljazeera, "html.parser")
 
 # Use soup to find all of the 'a' tags, these contain where the stories are from
 topic = soup.find_all('a', {"class": "topics-sec-item-label"})

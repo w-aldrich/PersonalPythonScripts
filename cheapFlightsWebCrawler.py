@@ -169,7 +169,7 @@ def navigateAlaskaAirlines(gotToCity, seleniumDriver):
     time.sleep(2)
     html = seleniumDriver.page_source #grab the html from the webpage
     seleniumDriver.close()
-    soup = BeautifulSoup(html, "html5lib") #soup it
+    soup = BeautifulSoup(html, "html.parser") #soup it
     cheapestFlight = soup.find(id='flightInfoRow_0_0') #This id is where the cheapestFlight actually resides
     flightInfo = cheapestFlight.get_text() #grab the text and put it into a list
     return flightInfo.split() #split on all the whitespace
@@ -218,7 +218,7 @@ def runAlaskaWithThreads(city):
     # options.add_argument("--headless")
     # options.add_argument('--disable-gpu')
     # seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver'', chrome_options=options)
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://www.alaskaair.com/')
     time.sleep(2)
     try:
@@ -269,7 +269,7 @@ def navigateDelta(city, seleniumDriver):
         time.sleep(20)
         html = seleniumDriver.page_source
         seleniumDriver.close()
-        soup = BeautifulSoup(html, "html5lib")
+        soup = BeautifulSoup(html, "html.parser")
         cheapestFlight = soup.prettify()
         return cheapestFlight.split("\n")
     except IndexError:
@@ -343,7 +343,7 @@ BE CAREFUL!!!! If multithreading Delta will ban you if using more than
 two threads. THIS IS STILL SKETCHY. Must restart computer to be able to access site again.
 '''
 def runDeltaWithThreads(city):
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver')
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://www.delta.com/')
     try:
         printDelta(navigateDelta(city, seleniumDriver), city)
