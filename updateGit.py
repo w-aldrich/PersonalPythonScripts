@@ -30,10 +30,6 @@ for f in folders:
             untracked = repo.untracked_files
             changedFiles = [repo.index.diff(None)]
 
-            for blah in changedFiles:
-                print (blah)
-            print (changedFiles[0])
-
             # if there is something untracked...
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
