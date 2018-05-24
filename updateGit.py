@@ -1,12 +1,17 @@
-import os
-from git import Repo
-
-# Uses GitPython must download
+# Author: William Aldrich
+# Created: 5-23-18
+# Updated: 5-24-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
 # http://gitpython.readthedocs.io/en/stable/tutorial.html
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+
+import os
+from git import Repo
+
+# Uses GitPython must download
 
 # Navigate to the folder that has your git repos inside of it
 # Mine is in my home directory so this is where everything takes place
@@ -19,6 +24,7 @@ homeDir = os.chdir(home)
 
 
 # Get folders in current directory
+# This should be able to find all git repos even if you add a new one
 folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
 for f in folders:
     # ignore . directories
@@ -48,7 +54,7 @@ for f in folders:
                 repo.git.add(A=True)
                 index = repo.index
                 # commit
-                index.commit("Automatic Backup via python scripts")
+                index.commit("Automatic Backup via updateGit.py")
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.")
