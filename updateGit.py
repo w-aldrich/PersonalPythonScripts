@@ -41,4 +41,4 @@ for f in folders:
                 repo.git.push('origin')
                 print (f + " Has been commited and pushed to github.")
 
-print ("All git accounts have been updated")
+print ("All git accounts have been updated or are up to date")
