@@ -32,6 +32,7 @@ for f in folders:
 
             for blah in changedFiles:
                 print (blah)
+            print (len(changedFiles))
 
             # if there is something untracked...
             # add everything to be commited
