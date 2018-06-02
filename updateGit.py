@@ -1,15 +1,18 @@
 # Author: William Aldrich
-# Created: 5-23-18
-# Updated: 5-24-18
+# Created: 05-23-18
+# Updated: 06-01-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
 # http://gitpython.readthedocs.io/en/stable/tutorial.html
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+# https://stackoverflow.com/questions/3160699/python-progress-bar/26761413?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
 import os
 from git import Repo
+import time
+import sys
 
 # Uses GitPython must download
 
@@ -37,6 +40,12 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
+    toolbar_width = len(files)
+    # setup toolbar
+    sys.stdout.write("[%s]" % (" " * toolbar_width))
+    sys.stdout.flush()
+    sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
+
     for x in files:
         # if the files have a .git file they are a repository
         if ".git" in x:
@@ -58,5 +67,7 @@ for f in folders:
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.")
+        sys.stdout.write("-")
+        sys.stdout.flush()
 
 print ("\nAll git accounts have been updated or are up to date\n")
