@@ -8,7 +8,7 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-import os
+import os, time
 from git import Repo
 import progressbar
 
@@ -65,6 +65,7 @@ for f in folders:
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.\n")
+        time.sleep(0.1)
         bar.update(length + 1)
 
 bar.finish()
