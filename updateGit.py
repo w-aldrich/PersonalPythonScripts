@@ -6,13 +6,12 @@
 # https://github.com/gitpython-developers/GitPython/issues/292
 # http://gitpython.readthedocs.io/en/stable/tutorial.html
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-# https://stackoverflow.com/questions/3160699/python-progress-bar/26761413?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
 import os
 from git import Repo
-import time
-import sys
+import progressbar
+
 
 # Uses GitPython must download
 
@@ -40,12 +39,11 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
-    toolbar_width = len(files)
-    # setup toolbar
-    sys.stdout.write("[%s]" % (" " * toolbar_width))
-    sys.stdout.flush()
-    sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
+    fileLen = len(files)
 
+    widgets = [progressbar.Percentage(), progressbar.Bar()]
+    bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
+    length = 0
     for x in files:
         # if the files have a .git file they are a repository
         if ".git" in x:
@@ -60,11 +58,6 @@ for f in folders:
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print (f + " has untracked or changed files that will be commited.")
                 # add everything
-                print("Adding: ")
-                for un in untracked:
-                    print (un)
-                for ch in changedFiles:
-                    print (ch)
                 repo.git.add(A=True)
                 index = repo.index
                 # commit
@@ -72,7 +65,8 @@ for f in folders:
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.\n")
-        sys.stdout.write("-")
-        sys.stdout.flush()
+        bar.update(length + 1)
+
+bar.finish()
 
 print ("\nAll git accounts have been updated or are up to date\n")
