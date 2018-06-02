@@ -39,7 +39,7 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
-    fileLen = 10
+    fileLen = len(files)
 
     widgets = [progressbar.Percentage(), progressbar.Bar()]
     bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
@@ -65,8 +65,10 @@ for f in folders:
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.\n")
-        time.sleep(0.1)
+        time.sleep(0.3)
         bar.update(length + 1)
+        length += 1
+
 
 bar.finish()
 
