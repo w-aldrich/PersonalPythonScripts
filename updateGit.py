@@ -33,7 +33,7 @@ widgets = ["Percentage Complete: ", progressbar.Percentage(), progressbar.Bar()]
 fileLen = len(folders)
 bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
 
-for f in folders:
+for pos, f in enumerate(folders):
     # ignore . directories
     # Change this if your git repos have '.' inside of them
     if '.' in f:
@@ -44,7 +44,7 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
-    for pos, file in enumerate(files):
+    for file in files:
         # if the files have a .git file they are a repository
         if ".git" in file:
             repo = Repo(insideFile)
@@ -65,8 +65,8 @@ for f in folders:
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.\n")
-        time.sleep(0.1)
-        bar.update(pos + 1)
+    time.sleep(0.1)
+    bar.update(pos + 1)
 
 
 bar.finish()
