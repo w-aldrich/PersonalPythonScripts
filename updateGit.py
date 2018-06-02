@@ -65,9 +65,10 @@ for pos, f in enumerate(folders):
                 # Push
                 repo.git.push('origin')
                 print (f + " Updated.\n")
+                continue
+        print (f + " Complete")
     time.sleep(0.1)
     bar.update(pos + 1)
-    print(f + " Complete")
 
 
 bar.finish()
