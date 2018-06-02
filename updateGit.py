@@ -39,7 +39,7 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
-    fileLen = len(files)
+    fileLen = 10
 
     widgets = [progressbar.Percentage(), progressbar.Bar()]
     bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
