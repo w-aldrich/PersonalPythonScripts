@@ -67,6 +67,7 @@ for pos, f in enumerate(folders):
                 print (f + " Updated.\n")
     time.sleep(0.1)
     bar.update(pos + 1)
+    print(f + " Complete")
 
 
 bar.finish()
