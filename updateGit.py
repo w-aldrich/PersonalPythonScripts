@@ -56,7 +56,7 @@ for pos, folder in enumerate(folders):
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
-                print ("\n " + folder + " has untracked or changed files that will be commited.")
+                print ("\n\n" + folder + " has untracked or changed files that will be commited.")
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
