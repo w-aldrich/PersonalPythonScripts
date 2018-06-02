@@ -28,6 +28,11 @@ homeDir = os.chdir(home)
 # Get folders in current directory
 # This should be able to find all git repos even if you add a new one
 folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
+
+widgets = ["Percentage Complete: ", progressbar.Percentage(), progressbar.Bar()]
+fileLen = len(folders)
+bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
+
 for f in folders:
     # ignore . directories
     # Change this if your git repos have '.' inside of them
@@ -39,10 +44,6 @@ for f in folders:
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
-    fileLen = len(files)
-
-    widgets = ["Percentage Complete: ", progressbar.Percentage(), progressbar.Bar()]
-    bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
     for pos, file in enumerate(files):
         # if the files have a .git file they are a repository
         if ".git" in file:
@@ -55,7 +56,7 @@ for f in folders:
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
-                print (file + " has untracked or changed files that will be commited.")
+                print (f + " has untracked or changed files that will be commited.")
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
@@ -63,7 +64,7 @@ for f in folders:
                 index.commit("Automatic Backup via updateGit.py")
                 # Push
                 repo.git.push('origin')
-                print (file + " Updated.\n")
+                print (f + " Updated.\n")
         time.sleep(0.1)
         bar.update(pos + 1)
 
