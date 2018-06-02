@@ -33,14 +33,14 @@ widgets = ["Percentage: ", progressbar.Percentage(), progressbar.Bar()]
 fileLen = len(folders)
 bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
 
-for pos, f in enumerate(folders):
+for pos, folder in enumerate(folders):
     # ignore . directories
     # Change this if your git repos have '.' inside of them
-    if '.' in f:
+    if '.' in folder:
         continue
 
     # change directory to inside the file
-    insideFile = os.chdir(home + "/" + str(f))
+    insideFile = os.chdir(home + "/" + str(folder))
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
@@ -56,7 +56,7 @@ for pos, f in enumerate(folders):
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
-                print (" " +f + " has untracked or changed files that will be commited.")
+                print ("\n " + folder + " has untracked or changed files that will be commited.")
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
@@ -64,9 +64,9 @@ for pos, f in enumerate(folders):
                 index.commit("Automatic Backup via updateGit.py")
                 # Push
                 repo.git.push('origin')
-                print (f + " Updated.\n")
+                print (folder + " Updated.\n")
                 continue
-            print (" " + f + ": Up to date")
+            print (" " + folder + ": Up to date")
     time.sleep(0.1)
     bar.update(pos + 1)
 
