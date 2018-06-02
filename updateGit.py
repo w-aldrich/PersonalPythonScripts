@@ -60,13 +60,18 @@ for f in folders:
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print (f + " has untracked or changed files that will be commited.")
                 # add everything
+                print("Adding: ")
+                for un in untracked:
+                    print (un)
+                for ch in changedFiles:
+                    print (ch)
                 repo.git.add(A=True)
                 index = repo.index
                 # commit
                 index.commit("Automatic Backup via updateGit.py")
                 # Push
                 repo.git.push('origin')
-                print (f + " Updated.")
+                print (f + " Updated.\n")
         sys.stdout.write("-")
         sys.stdout.flush()
 
