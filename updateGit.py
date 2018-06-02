@@ -29,7 +29,7 @@ homeDir = os.chdir(home)
 # This should be able to find all git repos even if you add a new one
 folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
 
-widgets = ["Percentage Complete: ", progressbar.Percentage(), progressbar.Bar()]
+widgets = ["Percentage: ", progressbar.Percentage(), progressbar.Bar()]
 fileLen = len(folders)
 bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
 
@@ -56,7 +56,7 @@ for pos, f in enumerate(folders):
             # add everything to be commited
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
-                print (f + " has untracked or changed files that will be commited.")
+                print (" " +f + " has untracked or changed files that will be commited.")
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
