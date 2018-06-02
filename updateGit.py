@@ -66,7 +66,7 @@ for pos, f in enumerate(folders):
                 repo.git.push('origin')
                 print (f + " Updated.\n")
                 continue
-            print (f + " Complete")
+            print (" " + f + ": Does not have untracked or changed files")
     time.sleep(0.1)
     bar.update(pos + 1)
 
