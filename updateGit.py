@@ -65,9 +65,9 @@ for pos, folder in enumerate(folders):
                 # Push
                 repo.git.push('origin')
                 print (folder + " Updated.\n")
-                continue
-            print (" " + folder + ": Up to date")
-    time.sleep(0.1)
+                #continue
+            #print (" " + folder + ": Up to date")
+    #time.sleep(0.1)
     bar.update(pos + 1)
 
 
