@@ -57,16 +57,20 @@ for pos, folder in enumerate(folders):
             # commit message is "Automatic Backup via python scripts"
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print ("\n\n" + folder + " has untracked or changed files that will be commited.")
-                enterMessage = input("Would you like to add a commit message for: " + folder + "? (y/n)")
+                enterMessage = input("Would you like to add a commit message for: " + folder + "? (y/n) ")
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
                 # commit
-                if("y" or "Y" in enterMessage):
+
+                commitMessage = ""
+
+                if("y" in enterMessage or "Y" in enterMessage):
                     commitMessage = input("Enter your message: ")
-                    index.commit(commitMessage)
                 else:
-                    index.commit("Automatic Backup via updateGit.py")
+                    commitMessage = ("Automatic Backup via updateGit.py")
+
+                index.commit(commitMessage)
                 # Push
                 repo.git.push('origin')
                 print (folder + " Updated.\n")
