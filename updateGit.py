@@ -1,6 +1,6 @@
 # Author: William Aldrich
 # Created: 05-23-18
-# Updated: 06-01-18
+# Updated: 06-03-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
@@ -14,6 +14,7 @@ import progressbar
 
 
 # Uses GitPython must download
+# Uses progressbar2 must download
 
 # Navigate to the folder that has your git repos inside of it
 # Mine is in my home directory so this is where everything takes place
@@ -52,34 +53,42 @@ for pos, folder in enumerate(folders):
             untracked = repo.untracked_files
             changedFiles = [repo.index.diff(None)]
 
-            # if there is something untracked...
-            # add everything to be commited
-            # commit message is "Automatic Backup via python scripts"
+            # if there are untracked or changed files
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print ("\n\n" + folder + " has untracked or changed files that will be commited.")
+
+                # ask user if they want to add a commit message for the folder
                 enterMessage = input("Would you like to add a commit message for: " + folder + "? (y/n) ")
+
                 # add everything
                 repo.git.add(A=True)
                 index = repo.index
-                # commit
 
                 commitMessage = ""
 
+                # enter a commit message if the user entered y
+                # If they didnt, it will give an automatic message
                 if("y" in enterMessage or "Y" in enterMessage):
                     commitMessage = input("Enter your message: ")
                 else:
-                    commitMessage = ("Automatic Backup via updateGit.py")
+                    commitMessage = ("Automatic Update via updateGit.py")
 
+                # Commit all of the untracked or changed files
                 index.commit(commitMessage)
+
                 # Push
                 repo.git.push('origin')
                 print (folder + " Updated.\n")
-                #continue
-            #print (" " + folder + ": Up to date")
+
+    # sleep to watch progress bar actually do something
+    # if you want it to run faster, get rid of this sleep or the progress bar
     time.sleep(0.1)
+
+    #update the progress bar
     bar.update(pos + 1)
 
-
+# This will say that the progress bar is finished 100%
 bar.finish()
 
+# final print message stating everything is updated or up to date
 print ("\nAll git accounts have been updated or are up to date\n")
