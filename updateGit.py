@@ -1,6 +1,6 @@
 # Author: William Aldrich
 # Created: 05-23-18
-# Updated: 06-03-18
+# Updated: 06-05-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
@@ -8,10 +8,8 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-import os, time
+import os, time, progressbar
 from git import Repo
-import progressbar
-
 
 # Uses GitPython must download
 # Uses progressbar2 must download
@@ -21,10 +19,8 @@ import progressbar
 
 # get home directory
 home = os.environ['HOME']
-
 # navigate to home directory
 homeDir = os.chdir(home)
-
 
 # Get folders in current directory
 # This should be able to find all git repos even if you add a new one
@@ -33,6 +29,11 @@ folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
 widgets = ["Percentage: ", progressbar.Percentage(), progressbar.Bar()]
 fileLen = len(folders)
 bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
+
+# flag if skipping repos
+complete = True
+# list of skipped repos
+incompleteFolders = []
 
 for pos, folder in enumerate(folders):
     # ignore . directories
@@ -45,6 +46,7 @@ for pos, folder in enumerate(folders):
     # get the files inside the directory
     files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
+    # loop through the files
     for file in files:
         # if the files have a .git file they are a repository
         if ".git" in file:
@@ -57,8 +59,24 @@ for pos, folder in enumerate(folders):
             if len(untracked) >= 1 or "<" in str(changedFiles[0]):
                 print ("\n\n" + folder + " has untracked or changed files that will be commited.")
 
+                if len(untracked) >= 1:
+                    print("Untracked Files:")
+                    for un in untracked:
+                        print ("\t" + un)
+                if "<" in str(changedFiles[0]):
+                    print("Changed Files:")
+                    for ch in repo.index.diff(None):
+                        print ("\t" + ch.a_path)
+
+
                 # ask user if they want to add a commit message for the folder
-                enterMessage = input("Would you like to add a commit message for: " + folder + "? (y/n) ")
+                enterMessage = input("Would you like to add a commit message for: " + folder + "? (y/n/sk) ")
+
+                if("sk" in enterMessage or "SK" in enterMessage):
+                    complete = False
+                    incompleteFolders.append(folder)
+                    print("Skipping commits for: " + folder + " \n")
+                    continue
 
                 # add everything
                 repo.git.add(A=True)
@@ -91,4 +109,9 @@ for pos, folder in enumerate(folders):
 bar.finish()
 
 # final print message stating everything is updated or up to date
-print ("\nAll git accounts have been updated or are up to date\n")
+if complete:
+    print ("\nAll git accounts have been updated or are up to date\n")
+else:
+    print ("\nThe following folders are not up to date:")
+    for incomplete in incompleteFolders:
+        print (incomplete)
