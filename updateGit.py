@@ -8,8 +8,11 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-import os, time, progressbar
+import os, time
+#import progressbar
 from git import Repo
+from git import remote
+
 
 # Uses GitPython must download
 # Uses progressbar2 must download
@@ -141,7 +144,6 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
         for ch in repo.index.diff(None):
             print ("\t" + ch.a_path)
 
-
     # ask user if they want to add a commit message for the folder
     enterMessage = input("Would you like to add a custom commit message for: " + folder + "? (yes(y)/no(n)/skip(sk)) ")
 
@@ -157,6 +159,11 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
 
     commitMessage = ""
 
+    pull = input("Would you like to pull: " + folder + " before you commit? (yes(y)/no(n)) ")
+
+    if("y" in enterMessage or "Y" in enterMessage):
+        pullReq = repo.remotes.origin
+        pullReq.pull()
     # enter a commit message if the user entered y
     # If they didnt, it will give an automatic message
     if("y" in enterMessage or "Y" in enterMessage):
