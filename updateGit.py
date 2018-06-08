@@ -133,7 +133,7 @@ Gives option to add personal message, automated message, or skip committing anyt
 Will add all files to commit
 '''
 def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteFolders):
-    print ("\n\n" + folder + " has untracked or changed files that will be committed.")
+    print ("\n" + folder + " has untracked or changed files that will be committed.")
 
     if len(untracked) >= 1:
         print("Untracked Files:")
@@ -145,7 +145,13 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
             print ("\t" + ch.a_path)
 
     # ask user if they want to add a commit message for the folder
-    enterMessage = input("Would you like to add a custom commit message for: " + folder + "? (yes(y)/no(n)/skip(sk)) ")
+    enterMessage = input("Would you like to add a custom commit message for: " + folder + "? Enter -o for options: ")
+
+    if (enterMessage == "-o"):
+        print("\nEnter 'y' to add a custom commit message for: " + folder)
+        print("Enter 'n' to have an automated message for your commit message for: " + folder)
+        print("Enter 'sk' to skip committing for: " + folder)
+        commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteFolders)
 
     if("sk" in enterMessage or "SK" in enterMessage):
         completeFlag = False
@@ -164,7 +170,7 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     # if("y" in enterMessage or "Y" in enterMessage):
     pullReq = repo.remotes.origin
     pullReq.pull()
-    print(folder + ": was pulled before commit")
+    print("\n" + folder + ": was pulled before commit\n")
     # enter a commit message if the user entered y
     # If they didnt, it will give an automatic message
     if("y" in enterMessage or "Y" in enterMessage):
