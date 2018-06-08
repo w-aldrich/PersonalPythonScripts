@@ -144,14 +144,18 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
         for ch in repo.index.diff(None):
             print ("\t" + ch.a_path)
 
-    # ask user if they want to add a commit message for the folder
-    enterMessage = input("Would you like to add a custom commit message for: " + folder + "? Enter -o for options: ")
+    messageHelpFlag = True
+    enterMessage = ""
+    while(messageHelpFlag):
+        # ask user if they want to add a commit message for the folder
+        enterMessage = input("Would you like to add a custom commit message for: " + folder + "? Enter -o for options: ")
 
-    if (enterMessage == "-o"):
-        print("\nEnter 'y' to add a custom commit message for: " + folder)
-        print("Enter 'n' to have an automated message for your commit message for: " + folder)
-        print("Enter 'sk' to skip committing for: " + folder)
-        commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteFolders)
+        if ("-o" in enterMessage):
+            print("\nEnter 'y' to add a custom commit message for: " + folder)
+            print("Enter 'n' to have an automated message for your commit message for: " + folder)
+            print("Enter 'sk' to skip committing for: " + folder + "\n")
+        else:
+            messageHelpFlag = False
 
     if("sk" in enterMessage or "SK" in enterMessage):
         completeFlag = False
