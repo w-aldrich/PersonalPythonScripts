@@ -51,7 +51,7 @@ python costOfBillsThisMonth.py
 You will need to fill out your username, password, email, and one additional password
 
 ## updateGit.py
-This is a program created to quickly go through all of your github repos and push them to github. This allows for quicker transition through all repos. Allows for manual entry of commit message while showing all of the untracked or changed files. If just doing a quick backup without many changes can set an automatic update message for the commit message. This program also allows an option to pull from a repo before you commit. 
+This is a program created to quickly go through all of your github repos and push them to github. This allows for quicker transition through all repos. Allows for manual entry of commit message while showing all of the untracked or changed files. If just doing a quick backup without many changes can set an automatic update message for the commit message. This program also allows an option to pull from a repo before you commit.
 
 This program does the equivalent of the following terminal commands.
 ```
@@ -63,7 +63,15 @@ git push
 ```
 
 #### To run this program
+This program uses Python3, gitpython, and if you want to use the progress bar, must download progressbar2
 I have added this program to my .profile as an alias to increase efficiency. I then only have to type 'update' and this program will run. If you would rather run this without adding an alias, go to the folder that this program is in. Once there run the following command
 ```
-python updateGit.py
+python3 updateGit.py
 ```
+If you would like adding it to your .profile enter in the following alias
+```
+alias update="python3 ~/PersonalPythonScripts/updateGit.py"
+```
+You can change 'update' to whatever you would like the alias to be
+The path must be the correct path to the project. If you would like this to update as it is written, all repos must be in your
+home folder. If they are not, you will have to modify the code

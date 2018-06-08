@@ -1,6 +1,7 @@
 # Author: William Aldrich
+# Github: https://github.com/w-aldrich
 # Created: 05-23-18
-# Updated: 06-05-18
+# Updated: 06-08-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
@@ -8,8 +9,8 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-import os, time
-# import progressbar # uncomment if using ProgressBar
+# import progressbar, time # uncomment if using ProgressBar
+import os
 from git import Repo
 from git import remote
 
@@ -206,8 +207,6 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
 Start of the program!
 
 Need to add:
-pull option when commiting
-fix progressbar
-error handeling for github pull if behind master and committing
+fix progressbar if want to use
 '''
 main()
