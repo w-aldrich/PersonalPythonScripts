@@ -1,6 +1,6 @@
 # PersonalPythonScripts
 
-### NOTE:
+### NOTES:
 - If you want to use just one of these scripts, you will have to copy and paste them into a python editor of some kind.
 - You can clone the entire repo if you want to have all of these.
 - These scripts are specific to my computer. You will have to change certain file paths for some of these projects.
@@ -63,7 +63,7 @@ You will need to fill out your username, password, email, and one additional pas
 
 ## updateGit.py
 Python3
-This is a program created to quickly go through all of your github repos and push them to github. This allows for quicker transition through all repos. Allows for manual entry of commit message while showing all of the untracked or changed files. If just doing a quick backup without many changes can set an automatic update message for the commit message. This program also allows an option to pull from a repo before you commit.
+This is a program created to quickly go through all of your github repos and push them to github. This allows for quicker transition through all repos. Allows for manual entry of commit message while showing all of the untracked or changed files. If just doing a quick backup without many changes can set an automatic update message for the commit message. This program will always pull from a repo before committing to the repo.
 
 This program does the equivalent of the following terminal commands.
 ```

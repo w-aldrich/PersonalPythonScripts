@@ -236,6 +236,8 @@ Must have so many sleep functions so you dont look like a robot
 The large wait times must happen so that the page actually loads up
 '''
 def navigateDelta(city, seleniumDriver):
+    if(seleniumDriver.current_url != "https://www.delta.com"):
+        seleniumDriver.get("https://www.delta.com")
     time.sleep(3)
     destination = seleniumDriver.find_element_by_id('destinationCity')
     destination.send_keys(city)
@@ -339,12 +341,13 @@ def printDelta(cheapestFlight, cityGoingTo):
 
 '''
 This allows for the opportunity to run with multiple threads
+Currently not using threads, would be something you need to add
 BE CAREFUL!!!! If multithreading Delta will ban you if using more than
 two threads. THIS IS STILL SKETCHY. Must restart computer to be able to access site again.
 '''
 def runDeltaWithThreads(city):
     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-    seleniumDriver.get('https://www.delta.com/')
+    seleniumDriver.get('https://www.delta.com')
     try:
         printDelta(navigateDelta(city, seleniumDriver), city)
     except NoSuchElementException :
@@ -356,6 +359,7 @@ def runDeltaWithThreads(city):
 
 '''
 Uncomment below incase of Robot message from Alaska Airlines
+Complete not a robot test and try again
 If blocked from Delta turn off computer for a few minutes then retry
 '''
 # seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver'')
@@ -364,8 +368,8 @@ If blocked from Delta turn off computer for a few minutes then retry
 '''
 -----START OF PROGRAM-----
 '''
-for city in nationalCityList:
-    runAlaskaWithThreads(city)
+# for city in nationalCityList:
+#     runAlaskaWithThreads(city)
 for city in nationalCityList: #must run Delta separately to get through Alaska quickly
     runDeltaWithThreads(city)
 for city in interNationalCityList:
