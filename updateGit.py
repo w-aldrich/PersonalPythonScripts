@@ -159,11 +159,12 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
 
     commitMessage = ""
 
-    pull = input("Would you like to pull: " + folder + " before you commit? (yes(y)/no(n)) ")
+    # pull = input("Would you like to pull: " + folder + " before you commit? (yes(y)/no(n)) ")
 
-    if("y" in enterMessage or "Y" in enterMessage):
-        pullReq = repo.remotes.origin
-        pullReq.pull()
+    # if("y" in enterMessage or "Y" in enterMessage):
+    pullReq = repo.remotes.origin
+    pullReq.pull()
+    print(folder + ": was pulled before commit")
     # enter a commit message if the user entered y
     # If they didnt, it will give an automatic message
     if("y" in enterMessage or "Y" in enterMessage):
