@@ -9,12 +9,12 @@
 
 
 import os, time
-#import progressbar
+# import progressbar # uncomment if using ProgressBar
 from git import Repo
 from git import remote
 
 
-# Uses GitPython must download
+# Uses gitpython must download
 # Uses progressbar2 must download
 
 # Navigate to the folder that has your git repos inside of it
@@ -40,14 +40,18 @@ def main():
     '''
     Add this back in if you want to work with a progress bar
     Slower with one, but prettier
+    As of right now must take everything out of functions for it to work
     '''
     # widgets = ["Complete: ", progressbar.Percentage(), progressbar.Bar()]
     # fileLen = len(folders)
     # bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
 
+    # Get whether or not everything is up to date as well as the folders that are not up to date
     retVals = goThroughFolders(home, folders)
 
+    # flag for everything up to date
     complete = retVals[0]
+    # list of incomplete folders
     incompleteFolders = retVals[1]
 
     '''
@@ -62,7 +66,7 @@ def main():
     else:
         print ("\nThe following folders are not up to date:")
         for incomplete in incompleteFolders:
-            print (incomplete)
+            print ("\t" + incomplete)
 
 '''
 This will loop through all of the folders for a given directory
@@ -73,9 +77,11 @@ def goThroughFolders(home, folders):
     completeFlag = True
     # list of skipped repos
     incompleteFolders = []
+
+
     for pos, folder in enumerate(folders):
         # ignore . directories
-        # Change this if your git repos have '.' inside of them
+        # Change this if your git repos have '.' inside of them or start with '.'
         if '.' in folder:
             continue
 
@@ -84,7 +90,10 @@ def goThroughFolders(home, folders):
         # get the files inside the directory
         files = [y for y in os.listdir('.') if os.path.isfile(y)]
 
+        # go through all of the files in the folder
         retVals = goThroughFiles(files, insideFile, folder, completeFlag, incompleteFolders)
+
+        # get the complete flag and list of incomplete folders
         completeFlag = retVals[0]
         incompleteFolders = retVals[1]
 
@@ -148,14 +157,14 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     enterMessage = ""
     while(messageHelpFlag):
         # ask user if they want to add a commit message for the folder
-        enterMessage = input("Would you like to add a custom commit message for: " + folder + "? Enter -o for options: ")
+        enterMessage = input("Would you like to add a custom commit message for: " + folder + "? \n")
 
-        if ("-o" in enterMessage):
+        if ("y" in enterMessage or "sk" in enterMessage or "n" in enterMessage):
+            messageHelpFlag = False
+        else:
             print("\nEnter 'y' to add a custom commit message for: " + folder)
             print("Enter 'n' to have an automated message for your commit message for: " + folder)
             print("Enter 'sk' to skip committing for: " + folder + "\n")
-        else:
-            messageHelpFlag = False
 
     if("sk" in enterMessage or "SK" in enterMessage):
         completeFlag = False
