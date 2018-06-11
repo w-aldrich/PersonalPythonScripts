@@ -1,13 +1,9 @@
 from bs4 import BeautifulSoup
-import time, datetime, sys, re
-from multiprocessing import Pool
+import time, datetime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import Select, WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 
 '''
@@ -63,6 +59,10 @@ if tripReturnDay > 30:
     if tripReturnMonth > 12:
         tripReturnMonth %= 12
 
+
+graduationTripDepart = "12/26/2018"
+graduationTripReturn = "01/04/2019"
+
 ###This is the departure date 2 months from now
 tripInTwoMonthsDepart = str(tripDepartMonth) + "/" + str(tripDepartDay) + "/" + str(year)
 ###This is the return date 2 weeks from the departure date in 2 months
@@ -74,24 +74,6 @@ THIS SECTION IS WHERE TO ADD NEW CITIES
 '''
 ###SLC is our departure point
 slc = 'Salt Lake City, UT'
-#Delta
-rome = "FCO"
-frankfurt = "FRA"
-hanoiVietnam = "HAN"
-zealand = "AKL"
-austrailia = 'SYD'
-peru = 'LIM'
-rio = 'GIG'
-brazil = 'BSB'
-chili = 'SCL'
-costa = 'SJO'
-mongolia = 'ULN'
-thai = 'BKK'
-marrakech = 'RAK' #Morroco
-barcelona = 'BCN'
-istanbul = 'IST'
-croacia = 'ZAG'
-iceland = 'KEF'
 #Alaska
 coloradoSpring = 'Colorado Springs, CO'
 portland = 'Portland, OR'
@@ -108,7 +90,17 @@ southDakota = 'Rapid City, SD (RAP-Rapid City Regional)'
 #A list of all the cities in the USA I care about
 nationalCityList = [bayArea, coloradoSpring, denver, portland, newMexico, eugene, vegas, newYork, newOrleans, boston, alaska, southDakota]
 #A list of country airports to travel to
-interNationalCityList = [rome, frankfurt, hanoiVietnam, zealand, austrailia, peru, rio, brazil, chili, costa, mongolia, thai, marrakech, barcelona, istanbul, croacia, iceland]
+
+interNationalCityList ={"Rome Italy": 'FCO', "FrankFurt": 'FRA', "Hanoi, Vietnam": 'HAN', "New Zealand": 'AKL',
+                        "Austrailia": 'SYD', "Peru": "LIM", "Rio de Janeiro, Brazil": 'GIG', "Brazil": 'BSB',
+                        "Chile": 'SCL', "Mongolia": 'ULN', "Thailand": 'BKK', "Marrakech": 'RAK', "Barcelona": 'BCN',
+                        "Istanbul": 'IST', "Croacia": 'ZAG', "Iceland": 'KEF'}
+
+beachSpots = {"Koh Lanta, Thailand (KBV)": 'KBV', "El Nido, Palawan, Philippines (MNL)": 'MNL',
+              "Costa Rica (SJO)": 'SJO', "Maui, Hawaii (OGG)": 'OGG', "Rio de Janeiro, Brazil (GIG)": 'GIG',
+              "Musandam, Oman (KHS)": 'KHS', "Corn Islands, Nicaragua (MGU)": 'MGU', "Aruba (AUA)": 'AUA',
+              "Gan (Maldives) (GAN)": 'GAN', "Handimaadhoo Maldives (HAQ)": 'HAQ', "Hulhule Maldives (HLE)": 'MLE',
+              "Maamingili Maldives (VAM)": 'VAM', "Bali Indonesia (DPS)": 'DPS', "Bora Bora (BOB)": 'BOB'}
 
 '''
 This will navigate Alaska Airlines website
@@ -235,31 +227,44 @@ This will navigate www.delta.com
 Must have so many sleep functions so you dont look like a robot
 The large wait times must happen so that the page actually loads up
 '''
-def navigateDelta(city, seleniumDriver):
-    if(seleniumDriver.current_url != "https://www.delta.com"):
-        seleniumDriver.get("https://www.delta.com")
+def navigateDelta(airportCode, seleniumDriver):
     time.sleep(3)
+    action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
+
     destination = seleniumDriver.find_element_by_id('destinationCity')
-    destination.send_keys(city)
-    destination.send_keys(Keys.TAB)
+    clickOnElement(destination, action)
+    sendLetters(airportCode, destination)
     time.sleep(3)
     depart = seleniumDriver.find_element_by_id('departureDate')
-    if city in nationalCityList:
-        depart.send_keys(weekInAdvance)
-    else:
-        depart.send_keys(tripInTwoMonthsDepart)
+    clickOnElement(depart, action)
+
+    ### USE FOR BEACH VACATIONS
+    sendLetters(graduationTripDepart, depart)
+
+    ### USE FOR NATIONAL CITIES or International cities random trips
+    # if city in nationalCityList:
+    #     sendLetters(weekInAdvance, depart)
+    # else:
+    #     sendLetters(tripInTwoMonthsDepart, depart)
+
+
     returnDate = seleniumDriver.find_element_by_id('returnDate')
-    if city in nationalCityList:
-        returnDate.send_keys(threeDayTrip)
-    else:
-        returnDate.send_keys(tripInTwoMonthsReturn)
+    clickOnElement(returnDate, action)
+
+    ### USE FOR BEACH VACATIONS
+    sendLetters(graduationTripReturn, returnDate)
+
+    ### USE FOR NATIONAL CITIES or International cities random trips
+    # if airportCode in nationalCityList:
+    #     sendLetters(threeDayTrip, returnDate)
+    # else:
+    #     sendLetters(tripInTwoMonthsReturn, returnDate)
+
+
     select = Select(seleniumDriver.find_element_by_id('paxCount')) #Select 2 adults for price
     select.select_by_visible_text('2')
-    # seleniumDriver.find_element_by_id('paxCount-button').click() #number of adults button
-    # time.sleep(3)
-    # seleniumDriver.find_element_by_id('ui-id-19').click() #2 adults has been ui-id-10
-    # time.sleep(2)
     seleniumDriver.find_element_by_id('findFlightsSubmit').click()
+    # clickOnElement(subButton, action)
     time.sleep(10)
     try:
         url = seleniumDriver.current_url
@@ -339,17 +344,25 @@ def printDelta(cheapestFlight, cityGoingTo):
         print "Delta could not find the flight you were looking for: " + cityGoingTo
     print "\n"
 
+
+# def deltaHome(seleniumDriver, city):
+#     test = seleniumDriver.find_element_by_class_name("airport-code d-block")
+#     test.send_keys(cityGoingTo)
+
 '''
 This allows for the opportunity to run with multiple threads
 Currently not using threads, would be something you need to add
 BE CAREFUL!!!! If multithreading Delta will ban you if using more than
 two threads. THIS IS STILL SKETCHY. Must restart computer to be able to access site again.
 '''
-def runDeltaWithThreads(city):
+def runDeltaWithThreads(city, airportCode):
     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-    seleniumDriver.get('https://www.delta.com')
+    # seleniumDriver.get('https://www.delta.com/flight-search/book-a-flight')
+    # time.sleep(2)
+    seleniumDriver.get('https://www.delta.com ')
+    # deltaHome(seleniumDriver, city)
     try:
-        printDelta(navigateDelta(city, seleniumDriver), city)
+        printDelta(navigateDelta(airportCode, seleniumDriver), city)
     except NoSuchElementException :
         seleniumDriver.close()
         print "\nDELTA Unable to find: " + city
@@ -365,12 +378,39 @@ If blocked from Delta turn off computer for a few minutes then retry
 # seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver'')
 # seleniumDriver.get('https://www.alaskaair.com')
 
+
+
+
+# def condorAirlines(airportCode):
+#     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
+#     seleniumDriver.get('https://www.condor.com/us/index.jsp')
+#     action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
+#     depart = seleniumDriver.find_element_by_id("searchAirportOrigin")
+#     clickOnElement(depart, action)
+#     sendLetters("SLC")
+#     destination = seleniumDriver.find_element_by_id("searchAirportDestination")
+#     clickOnElement(destination, action)
+#     sendLetters(airportCode, destination)
+
+
+def clickOnElement(element, action):
+    action.move_to_element(element)
+    time.sleep(.5)
+    action.click(element)
+
+def sendLetters(word, element):
+    for letter in word:
+        element.send_keys(letter)
+        time.sleep(.15)
+
 '''
 -----START OF PROGRAM-----
 '''
 # for city in nationalCityList:
 #     runAlaskaWithThreads(city)
-for city in nationalCityList: #must run Delta separately to get through Alaska quickly
-    runDeltaWithThreads(city)
-for city in interNationalCityList:
-    runDeltaWithThreads(city)
+# for city in nationalCityList: #must run Delta separately to get through Alaska quickly
+#     runDeltaWithThreads(city)
+for city in beachSpots.items():
+    runDeltaWithThreads(city[0], city[1])
+# for city in interNationalCityList.items():
+#     runDeltaWithThreads(city[0], city[1])

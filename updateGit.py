@@ -208,5 +208,11 @@ Start of the program!
 
 Need to add:
 fix progressbar if want to use
+add checkout option
+add rm option
+
+FIX:
+stderr: 'fatal: unable to access 'https://github.com/w-aldrich/PersonalPythonScripts.git/': Could not resolve host: github.com'
+// unable to access internet error system check
 '''
 main()
