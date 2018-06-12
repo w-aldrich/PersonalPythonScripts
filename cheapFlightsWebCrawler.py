@@ -204,7 +204,7 @@ def printOutInformationAlaska(goThroughFlightInfo, cityGoingTo):
 This allows the opportunity for multi-threading with Alaska Airlines
 BE CAREFUL!!! If multi-threading more likely to be considered a robot
 '''
-def runAlaskaWithThreads(city):
+def runAlaska(city):
     #create a new driver for every city to get rid of cookie issues
     # options = Options()
     # options.add_argument("--headless")
@@ -345,22 +345,15 @@ def printDelta(cheapestFlight, cityGoingTo):
     print "\n"
 
 
-# def deltaHome(seleniumDriver, city):
-#     test = seleniumDriver.find_element_by_class_name("airport-code d-block")
-#     test.send_keys(cityGoingTo)
-
 '''
 This allows for the opportunity to run with multiple threads
 Currently not using threads, would be something you need to add
 BE CAREFUL!!!! If multithreading Delta will ban you if using more than
 two threads. THIS IS STILL SKETCHY. Must restart computer to be able to access site again.
 '''
-def runDeltaWithThreads(city, airportCode):
+def runDelta(city, airportCode):
     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-    # seleniumDriver.get('https://www.delta.com/flight-search/book-a-flight')
-    # time.sleep(2)
     seleniumDriver.get('https://www.delta.com ')
-    # deltaHome(seleniumDriver, city)
     try:
         printDelta(navigateDelta(airportCode, seleniumDriver), city)
     except NoSuchElementException :
@@ -393,6 +386,26 @@ If blocked from Delta turn off computer for a few minutes then retry
 #     sendLetters(airportCode, destination)
 
 
+def unitedAirlines(airportCode):
+    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
+    seleniumDriver.get('https://www.united.com/ual/en/us/')
+    depart = seleniumDriver.find_element_by_id("Origin")
+    action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
+    clickOnElement(depart, action)
+    sendLetters(slc, depart)
+    destination = seleniumDriver.find_element_by_id("Destination")
+    clickOnElement(destination, action)
+    sendLetters(airportCode, destination)
+    # seleniumDriver.find_element_by_id("flexDate").click()
+    departDate = seleniumDriver.find_element_by_id("DepartDate")
+    clickOnElement(departDate, action)
+    sendLetters(graduationTripDepart, departDate)
+    returnDate = seleniumDriver.find_element_by_id("ReturnDate")
+    # clickOnElement(returnDate, action)
+    sendLetters(graduationTripReturn, returnDate)
+    seleniumDriver.find_element_by_id("flightBookingSubmit").click()
+    time.sleep(20)
+
 def clickOnElement(element, action):
     action.move_to_element(element)
     time.sleep(.5)
@@ -407,10 +420,11 @@ def sendLetters(word, element):
 -----START OF PROGRAM-----
 '''
 # for city in nationalCityList:
-#     runAlaskaWithThreads(city)
+#     runAlaska(city)
 # for city in nationalCityList: #must run Delta separately to get through Alaska quickly
-#     runDeltaWithThreads(city)
+#     runDelta(city)
 for city in beachSpots.items():
-    runDeltaWithThreads(city[0], city[1])
+    #runDelta(city[0], city[1])
+    unitedAirlines(city[1])
 # for city in interNationalCityList.items():
-#     runDeltaWithThreads(city[0], city[1])
+#     runDelta(city[0], city[1])
