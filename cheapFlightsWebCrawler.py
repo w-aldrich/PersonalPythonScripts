@@ -386,7 +386,7 @@ If blocked from Delta turn off computer for a few minutes then retry
 #     sendLetters(airportCode, destination)
 
 
-def unitedAirlines(airportCode):
+def unitedAirlines(airportCode, city):
     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
     seleniumDriver.get('https://www.united.com/ual/en/us/')
     depart = seleniumDriver.find_element_by_id("Origin")
@@ -405,6 +405,32 @@ def unitedAirlines(airportCode):
     sendLetters(graduationTripReturn, returnDate)
     seleniumDriver.find_element_by_id("flightBookingSubmit").click()
     time.sleep(20)
+    soup = BeautifulSoup(seleniumDriver.page_source, "html.parser")
+    lowest = soup.find_all("span", {"class": "lowest-Economy"})
+
+    for x in lowest:
+        text = x.text
+        lowestPrice = text.split("price")
+        print("United Airlines lowest price for: " + city)
+        print (lowestPrice[1])
+
+    print("DONE")
+    seleniumDriver.close()
+
+
+
+
+    # seleniumDriver.find_element_by_id("fare-matrix-link").click()
+    # time.sleep(20)
+    # soup = BeautifulSoup(seleniumDriver.page_source, "html.parser")
+    # seleniumDriver.close()
+    # table = soup.find_all("table", {"class": "fare-matrix"})
+    # head = table.find_all("thead")
+    # columns = table.find("div", {"class": "fare-matrix-cell head-day-cell "}) # now a list
+    # lowest = table.find_all("div", {"class": "fare-matrix-price lowest "})
+    #
+    # for x in lowest:
+    #     print ("United Airlines price: " + x.text)
 
 def clickOnElement(element, action):
     action.move_to_element(element)
@@ -425,6 +451,9 @@ def sendLetters(word, element):
 #     runDelta(city)
 for city in beachSpots.items():
     #runDelta(city[0], city[1])
-    unitedAirlines(city[1])
+    # try:
+    unitedAirlines(city[1], city[0])
+    # except:
+    #     continue
 # for city in interNationalCityList.items():
 #     runDelta(city[0], city[1])
