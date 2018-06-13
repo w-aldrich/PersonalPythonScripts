@@ -6,6 +6,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 
+# API's ?
+# https://developer.lufthansa.com/docs/read/api_partner/offers/Vayant_Lowest_Fares_New
+
 '''
 This program will scrape Alaska Airlines and Delta Airlines for the cheapest flights
 It will take a while to run due to not getting banned from these sites
@@ -386,36 +389,34 @@ If blocked from Delta turn off computer for a few minutes then retry
 #     sendLetters(airportCode, destination)
 
 
-def unitedAirlines(airportCode, city):
-    seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-    seleniumDriver.get('https://www.united.com/ual/en/us/')
-    depart = seleniumDriver.find_element_by_id("Origin")
-    action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
-    clickOnElement(depart, action)
-    sendLetters(slc, depart)
-    destination = seleniumDriver.find_element_by_id("Destination")
-    clickOnElement(destination, action)
-    sendLetters(airportCode, destination)
-    # seleniumDriver.find_element_by_id("flexDate").click()
-    departDate = seleniumDriver.find_element_by_id("DepartDate")
-    clickOnElement(departDate, action)
-    sendLetters(graduationTripDepart, departDate)
-    returnDate = seleniumDriver.find_element_by_id("ReturnDate")
-    # clickOnElement(returnDate, action)
-    sendLetters(graduationTripReturn, returnDate)
-    seleniumDriver.find_element_by_id("flightBookingSubmit").click()
-    time.sleep(20)
-    soup = BeautifulSoup(seleniumDriver.page_source, "html.parser")
-    lowest = soup.find_all("span", {"class": "lowest-Economy"})
-
-    for x in lowest:
-        text = x.text
-        lowestPrice = text.split("price")
-        print("United Airlines lowest price for: " + city)
-        print (lowestPrice[1])
-
-    print("DONE")
-    seleniumDriver.close()
+# def unitedAirlines(airportCode, city):
+#     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
+#     seleniumDriver.get('https://www.united.com/ual/en/us/')
+#     depart = seleniumDriver.find_element_by_id("Origin")
+#     action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
+#     clickOnElement(depart, action)
+#     sendLetters(slc, depart)
+#     destination = seleniumDriver.find_element_by_id("Destination")
+#     clickOnElement(destination, action)
+#     sendLetters(airportCode, destination)
+#     # seleniumDriver.find_element_by_id("flexDate").click()
+#     departDate = seleniumDriver.find_element_by_id("DepartDate")
+#     clickOnElement(departDate, action)
+#     sendLetters(graduationTripDepart, departDate)
+#     returnDate = seleniumDriver.find_element_by_id("ReturnDate")
+#     # clickOnElement(returnDate, action)
+#     sendLetters(graduationTripReturn, returnDate)
+#     seleniumDriver.find_element_by_id("flightBookingSubmit").click()
+#     time.sleep(20)
+#     soup = BeautifulSoup(seleniumDriver.page_source, "html.parser")
+#     lowest = soup.find_all("span", {"class": "lowest-Economy"})
+#
+#     text = lowest[0].text
+#     lowestPrice = text.split("price")
+#     print("United Airlines lowest price for: " + city)
+#     print (lowestPrice[1])
+#
+#     seleniumDriver.close()
 
 
 
@@ -450,9 +451,9 @@ def sendLetters(word, element):
 # for city in nationalCityList: #must run Delta separately to get through Alaska quickly
 #     runDelta(city)
 for city in beachSpots.items():
-    #runDelta(city[0], city[1])
+    runDelta(city[0], city[1])
     # try:
-    unitedAirlines(city[1], city[0])
+    #     unitedAirlines(city[1], city[0])
     # except:
     #     continue
 # for city in interNationalCityList.items():
