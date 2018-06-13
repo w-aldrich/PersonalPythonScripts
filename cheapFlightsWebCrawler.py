@@ -7,7 +7,19 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 
 # API's ?
-# https://developer.lufthansa.com/docs/read/api_partner/offers/Vayant_Lowest_Fares_New
+# https://developer.alaskaair.com/
+# http://www.flyfrontier.com/f9_services/wordwheel/wordwheellocal.asmx
+# https://www.travelboutiqueonline.com/flight_api.aspx
+
+# List of airlines that fly out of SLC
+# Delta --- Can Scrape for personal use
+# United --- Cannot Scrape
+# Frontier --- maybe API?
+# SouthWest --- Cannot Scrape
+# Alaska --- Has API Change from Scraping to API 2 hits per min?
+# Boutique --- maybe api
+# American
+# jetBlue
 
 '''
 This program will scrape Alaska Airlines and Delta Airlines for the cheapest flights
@@ -373,20 +385,6 @@ If blocked from Delta turn off computer for a few minutes then retry
 '''
 # seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/python/chromeDriver'')
 # seleniumDriver.get('https://www.alaskaair.com')
-
-
-
-
-# def condorAirlines(airportCode):
-#     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-#     seleniumDriver.get('https://www.condor.com/us/index.jsp')
-#     action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
-#     depart = seleniumDriver.find_element_by_id("searchAirportOrigin")
-#     clickOnElement(depart, action)
-#     sendLetters("SLC")
-#     destination = seleniumDriver.find_element_by_id("searchAirportDestination")
-#     clickOnElement(destination, action)
-#     sendLetters(airportCode, destination)
 
 
 # def unitedAirlines(airportCode, city):
