@@ -248,18 +248,20 @@ def navigateDelta(airportCode, seleniumDriver):
     time.sleep(3)
     action = ActionChains(seleniumDriver) #This will allow simulation of mouse movement
 
-    destination = seleniumDriver.find_element_by_id('destinationCity')
+    # destination = seleniumDriver.find_element_by_id('destinationCity')
+    destination = seleniumDriver.find_element_by_id('input_destination_1')
     clickOnElement(destination, action)
     sendLetters(airportCode, destination)
     time.sleep(3)
-    depart = seleniumDriver.find_element_by_id('departureDate')
+    # depart = seleniumDriver.find_element_by_id('departureDate')
+    depart = seleniumDriver.find_element_by_class('calenderDepartSpan')
     clickOnElement(depart, action)
 
     gradTrip = graduationTrip()
     ### USE FOR BEACH VACATIONS
     sendLetters(gradTrip[0], depart)
 
-    returnDate = seleniumDriver.find_element_by_id('returnDate')
+    returnDate = seleniumDriver.find_element_by_class('calenderReturnSpan')
     clickOnElement(returnDate, action)
 
     ### USE FOR BEACH VACATIONS
@@ -345,7 +347,7 @@ def printDelta(cheapestFlight, cityGoingTo):
 
 def runDelta(city, airportCode):
     seleniumDriver = webdriver.Chrome(executable_path=r'/Users/waldrich/PersonalPythonScripts/chromeDriver')
-    seleniumDriver.get('https://www.delta.com ')
+    seleniumDriver.get('https://www.delta.com/flight-search/book-a-flight')
     try:
         printDelta(navigateDelta(airportCode, seleniumDriver), city)
     except NoSuchElementException :
@@ -399,4 +401,6 @@ def sendLetters(word, element):
 -----START OF PROGRAM-----
 '''
 for city in beachSpots.items():
+    runDelta(city[0], city[1])
+for city in interNationalCityList.items():
     runDelta(city[0], city[1])
