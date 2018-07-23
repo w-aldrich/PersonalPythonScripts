@@ -24,7 +24,7 @@ for headline in nytimesHeadlines:
         startHeadlines = True
         continue
     if startHeadlines == True:
-        if 'Comments' in headline or 'Subscribe' in headline or headline == '':
+        if 'Comments' in headline or 'Subscribe' in headline or headline == '' or "Real Estate" in headline:
             continue
         if "Editorial:" in headline or headlineCount == 10:
             break
