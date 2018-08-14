@@ -1,7 +1,7 @@
 # Author: William Aldrich
 # Github: https://github.com/w-aldrich
 # Created: 05-23-18
-# Updated: 06-08-18
+# Updated: 08-14-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
@@ -9,14 +9,9 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-# import progressbar, time # uncomment if using ProgressBar
-import os
+import os, sys
 from git import Repo
 from git import remote
-
-
-# Uses gitpython must download
-# Uses progressbar2 must download
 
 # Navigate to the folder that has your git repos inside of it
 # Mine is in my home directory so this is where everything takes place
@@ -38,15 +33,6 @@ def main():
     # This should be able to find all git repos even if you add a new one
     folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
 
-    '''
-    Add this back in if you want to work with a progress bar
-    Slower with one, but prettier
-    As of right now must take everything out of functions for it to work
-    '''
-    # widgets = ["Complete: ", progressbar.Percentage(), progressbar.Bar()]
-    # fileLen = len(folders)
-    # bar = progressbar.ProgressBar(widgets=widgets, max_value=fileLen).start()
-
     # Get whether or not everything is up to date as well as the folders that are not up to date
     retVals = goThroughFolders(home, folders)
 
@@ -54,12 +40,6 @@ def main():
     complete = retVals[0]
     # list of incomplete folders
     incompleteFolders = retVals[1]
-
-    '''
-    This will complete the progress bar, add this back in if you want it
-    '''
-    # This will say that the progress bar is finished 100%
-    # bar.finish()
 
     # final print message stating everything is updated or up to date
     if complete:
@@ -98,25 +78,14 @@ def goThroughFolders(home, folders):
         completeFlag = retVals[0]
         incompleteFolders = retVals[1]
 
-    '''
-    If adding the progress bar back in, uncomment this section
-    This should update the progress bar for you
-    '''
-    # # sleep to watch progress bar actually do something
-    # # if you want it to run faster, get rid of this sleep or the progress bar
-    # time.sleep(0.1)
-    #
-    # #update the progress bar
-    # bar.update(pos + 1)
-
     return(completeFlag, incompleteFolders)
 
 '''
 This will loop through all of the files for a given folder
 Checks for .git to know if it is a repo or not
-!!!
-MUST HAVE .git file (.gitignore) to actually identify it as a github repo
-!!!
+***
+MUST HAVE .git file to actually identify it as a github repo
+***
 Finds all of the untracked or changed files
 '''
 def goThroughFiles(files, insideFile, folder, completeFlag, incompleteFolders):
@@ -178,10 +147,6 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     index = repo.index
 
     commitMessage = ""
-
-    # pull = input("Would you like to pull: " + folder + " before you commit? (yes(y)/no(n)) ")
-
-    # if("y" in enterMessage or "Y" in enterMessage):
     pullReq = repo.remotes.origin
     pullReq.pull()
     print("\n" + folder + ": was pulled before commit\n")
@@ -201,18 +166,32 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     return (completeFlag, incompleteFolders)
 
 
+def pullAllRepos():
+    home = os.environ['HOME']
+    homeDir = os.chdir(home)
+    folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
+    for pos, folder in enumerate(folders):
+        if '.' in folder:
+            continue
+        insideFile = os.chdir(home + "/" + str(folder))
+        files = [y for y in os.listdir('.') if os.path.isfile(y)]
+        for file in files:
+            # if the files have a .git file they are a repository
+            if ".git" in file:
+                repo = Repo(insideFile)
+                pullReq = repo.remotes.origin
+                pullReq.pull()
+                print("Pulled " + folder)
 
 
-'''
-Start of the program!
+if __name__ == '__main__':
+    import argparse
 
-Need to add:
-fix progressbar if want to use
-add checkout option
-add rm option
+    parser = argparse.ArgumentParser(description='Update Github Repositories')
+    parser.add_argument('-pa', '--pullall', help="Pull all Repositories", action="store_true")
+    args = parser.parse_args()
 
-FIX:
-stderr: 'fatal: unable to access 'https://github.com/w-aldrich/PersonalPythonScripts.git/': Could not resolve host: github.com'
-// unable to access internet error system check
-'''
-main()
+    if args.pullall:
+        pullAllRepos()
+    else:
+        main()
