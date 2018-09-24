@@ -144,18 +144,19 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
 
     index = repo.index
     commitMessage = ""
+    # add everything
+    repo.git.add(A=True)
+
     # Check if only master branch exists
     # Pull if only master branch exists
     branches = repo.heads
     if (len(branches) <= 1):
-        # add everything
-        repo.git.add(A=True)
-
         pullReq = repo.remotes.origin
         pullReq.pull()
         print("\n" + folder + ": was pulled before commit\n")
-        # enter a commit message if the user entered y
-        # If they didnt, it will give an automatic message
+        
+    # enter a commit message if the user entered y
+    # If they didnt, it will give an automatic message
     if("y" in enterMessage or "Y" in enterMessage):
         commitMessage = input("Enter your commit message: ")
     else:
