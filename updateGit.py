@@ -142,23 +142,27 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
         print("Skipping commits for: " + folder + " \n")
         return (completeFlag, incompleteFolders)
 
-    # add everything
-    repo.git.add(A=True)
-    index = repo.index
+    # Check if only master branch exists
+    # Pull if only master branch exists
+    branches = repo.heads
+    if (len(branches) <= 1):
+        # add everything
+        repo.git.add(A=True)
+        index = repo.index
 
-    commitMessage = ""
-    pullReq = repo.remotes.origin
-    pullReq.pull()
-    print("\n" + folder + ": was pulled before commit\n")
-    # enter a commit message if the user entered y
-    # If they didnt, it will give an automatic message
-    if("y" in enterMessage or "Y" in enterMessage):
-        commitMessage = input("Enter your commit message: ")
-    else:
-        commitMessage = ("Automatic Update via updateGit.py")
+        commitMessage = ""
+        pullReq = repo.remotes.origin
+        pullReq.pull()
+        print("\n" + folder + ": was pulled before commit\n")
+        # enter a commit message if the user entered y
+        # If they didnt, it will give an automatic message
+        if("y" in enterMessage or "Y" in enterMessage):
+            commitMessage = input("Enter your commit message: ")
+        else:
+            commitMessage = ("Automatic Update via updateGit.py")
 
-    # Commit all of the untracked or changed files
-    index.commit(commitMessage)
+        # Commit all of the untracked or changed files
+        index.commit(commitMessage)
 
     # Push
     repo.git.push('origin')
