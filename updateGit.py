@@ -183,13 +183,13 @@ def pullAllRepos():
             # if the files have a .git file they are a repository
             if ".git" in file:
                 repo = Repo(insideFile)
-                branches = repo.heads
-                currentBranch = repo.active_branch
-                if (len(branches) > 1):
-                    branches['master'].checkout()
+                # branches = repo.heads
+                # currentBranch = repo.active_branch
+                # if (len(branches) > 1):
+                #     branches['master'].checkout()
                 pullReq = repo.remotes.origin
                 pullReq.pull()
-                branches[str(currentBranch)].checkout()
+                # branches[str(currentBranch)].checkout()
                 print("Pulled " + folder)
 
 
