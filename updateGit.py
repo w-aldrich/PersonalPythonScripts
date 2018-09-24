@@ -9,7 +9,7 @@
 # https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
-import os, sys
+import os, sys, argparse
 from git import Repo
 from git import remote
 
@@ -147,14 +147,14 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     # add everything
     repo.git.add(A=True)
 
-    # Check if only master branch exists
-    # Pull if only master branch exists
+    # Check if ONLY master branch exists
+    # Pull if ONLY master branch exists
     branches = repo.heads
     if (len(branches) <= 1):
         pullReq = repo.remotes.origin
         pullReq.pull()
         print("\n" + folder + ": was pulled before commit\n")
-        
+
     # enter a commit message if the user entered y
     # If they didnt, it will give an automatic message
     if("y" in enterMessage or "Y" in enterMessage):
@@ -184,24 +184,27 @@ def pullAllRepos():
             # if the files have a .git file they are a repository
             if ".git" in file:
                 repo = Repo(insideFile)
-                # branches = repo.heads
-                # currentBranch = repo.active_branch
-                # if (len(branches) > 1):
-                #     branches['master'].checkout()
+                branches = repo.heads
+                currentBranch = repo.active_branch
+                if (len(branches) > 1):
+                    branches['master'].checkout()
                 pullReq = repo.remotes.origin
                 pullReq.pull()
-                # branches[str(currentBranch)].checkout()
+                branches[str(currentBranch)].checkout()
                 print("Pulled " + folder)
 
 
 if __name__ == '__main__':
-    import argparse
 
     parser = argparse.ArgumentParser(description='Update Github Repositories')
     parser.add_argument('-pa', '--pullall', help="Pull all Repositories", action="store_true")
+    parser.add_argument('-pu', '--pullupdate', help="Pull all Repositories then check if need to update any", action="store_true")
     args = parser.parse_args()
 
     if args.pullall:
         pullAllRepos()
+    elif args.pullupdate:
+        pullAllRepos()
+        main()
     else:
         main()
