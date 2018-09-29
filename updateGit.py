@@ -1,7 +1,7 @@
 # Author: William Aldrich
 # Github: https://github.com/w-aldrich
 # Created: 05-23-18
-# Updated: 08-14-18
+# Updated: 09-27-18
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
