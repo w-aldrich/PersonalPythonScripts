@@ -23,11 +23,13 @@ calls goThroughFolders() to do the heavy work
 Prints out whether or not all git repos are up to date or not after this program
 if not, will print out all repos that need to be updated
 '''
-def main():
+def main(additionalDirectory=""):
     # get home directory
     home = os.environ['HOME']
     # navigate to home directory
-    homeDir = os.chdir(home)
+    if(additionalDirectory != ""):
+        home = home + "/" + additionalDirectory
+    os.chdir(home)
 
     # Get folders in current directory
     # This should be able to find all git repos even if you add a new one
@@ -171,9 +173,13 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
     return (completeFlag, incompleteFolders)
 
 
-def pullAllRepos():
+def pullAllRepos(additionalDirectory=""):
     home = os.environ['HOME']
-    homeDir = os.chdir(home)
+    
+    if additionalDirectory != "":
+        home = home + "/" + additionalDirectory
+
+    os.chdir(home)
     folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
     for pos, folder in enumerate(folders):
         if '.' in folder:
@@ -203,8 +209,12 @@ if __name__ == '__main__':
 
     if args.pullall:
         pullAllRepos()
+        pullAllRepos("School")
     elif args.pullupdate:
         pullAllRepos()
+        pullAllRepos("School")
         main()
+        main("School")
     else:
         main()
+        main("School")
