@@ -1,5 +1,5 @@
-# import mechanize, getpass
-# from mechanize import Browser
+#!/usr/bin/env python
+
 from bs4 import BeautifulSoup
 import time, re, getpass
 from multiprocessing import Process
