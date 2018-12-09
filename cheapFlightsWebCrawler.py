@@ -90,8 +90,8 @@ def depart2Months2WkTrip():
     return (tripInTwoMonthsDepart, tripInTwoMonthsReturn)
 
 def graduationTrip():
-    graduationTripDepart = "12/26/2018"
-    graduationTripReturn = "01/04/2019"
+    graduationTripDepart = "12/16/2018"
+    graduationTripReturn = "12/23/2019"
     return (graduationTripDepart, graduationTripReturn)
 
 
@@ -126,7 +126,7 @@ beachSpots = {"Koh Lanta, Thailand (KBV)": 'KBV', "El Nido, Palawan, Philippines
               "Costa Rica (SJO)": 'SJO', "Maui, Hawaii (OGG)": 'OGG', "Rio de Janeiro, Brazil (GIG)": 'GIG',
               "Musandam, Oman (KHS)": 'KHS', "Corn Islands, Nicaragua (MGU)": 'MGU', "Aruba (AUA)": 'AUA',
               "Gan (Maldives) (GAN)": 'GAN', "Handimaadhoo Maldives (HAQ)": 'HAQ', "Hulhule Maldives (HLE)": 'MLE',
-              "Maamingili Maldives (VAM)": 'VAM', "Bali Indonesia (DPS)": 'DPS', "Bora Bora (BOB)": 'BOB'}
+              "Maamingili Maldives (VAM)": 'VAM', "Bali Indonesia (DPS)": 'DPS', "Bora Bora (BOB)": 'BOB', "Grand Cayman": "GCM"}
 
 # def navigateAlaskaAirlines(gotToCity, seleniumDriver):
 #     time.sleep(3) #ensure that the page loads before doing anything else

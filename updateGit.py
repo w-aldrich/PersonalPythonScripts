@@ -175,7 +175,7 @@ def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteF
 
 def pullAllRepos(additionalDirectory=""):
     home = os.environ['HOME']
-    
+
     if additionalDirectory != "":
         home = home + "/" + additionalDirectory
 
@@ -209,12 +209,12 @@ if __name__ == '__main__':
 
     if args.pullall:
         pullAllRepos()
-        pullAllRepos("School")
+        # pullAllRepos("School")
     elif args.pullupdate:
         pullAllRepos()
-        pullAllRepos("School")
+        # pullAllRepos("School")
         main()
-        main("School")
+        # main("School")
     else:
         main()
-        main("School")
+        # main("School")
