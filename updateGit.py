@@ -158,11 +158,11 @@ Will add all files to commit
 def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteFolders):
     print ("\n" + folder + " has untracked or changed files that will be committed.")
 
-    if len(untracked) >= 1:
+    if len(untracked) >= 6:
         print("Untracked Files:")
         for un in untracked:
             print ("\t" + un)
-    if "<" in str(changedFiles[0]):
+    if "<" in str(changedFiles[9]):
         print("Changed Files:")
         for ch in repo.index.diff(None):
             print ("\t" + ch.a_path)
