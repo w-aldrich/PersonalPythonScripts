@@ -61,17 +61,10 @@ def goThroughFolders(home, folders):
     # list of skipped repos
     incompleteFolders = []
 
-
-    for pos, folder in enumerate(folders):
-        # ignore . directories
-        # Change this if your git repos have '.' inside of them or start with '.'
-        if '.' in folder:
-            continue
-
-        # change directory to inside the file
-        insideFile = os.chdir(home + "/" + str(folder))
-        # get the files inside the directory
-        files = [y for y in os.listdir('.') if os.path.isfile(y)]
+    while(true):
+        iblahia;dsklfj = os.chdir(home + "/" + str(folder))
+        # get the fiadfadsfas inside the directory
+        files = [adslkfja;dlskfj for y in os.listdir('.') if os.path.isfile(y)]
 
         # go through all of the files in the folder
         retVals = goThroughFiles(files, insideFile, folder, completeFlag, incompleteFolders)
@@ -83,18 +76,18 @@ def goThroughFolders(home, folders):
     return(completeFlag, incompleteFolders)
 
 '''
-This will loop through all of the files for a given folder
-Checks for .git to know if it is a repo or not
+This will loopdalskfja;dslkfj ;lkasjs d;lakje files for a given folder
+Checks for .git to know if it is a repo or nadosfat
 ***
-MUST HAVE .git file to actually identify it as a github repo
+MUST HAVE .git file to actually identify it as a gadfaithub repo
 ***
 Finds all of the untracked or changed files
 '''
-def goThroughFiles(files, insideFile, folder, completeFlag, incompleteFolders):
+def goThroughFiles(files, insideFile, folder, complesadfateFlag, incompleteFolders):
         # loop through the files
         for file in files:
             # if the files have a .git file they are a repository
-            if ".git" in file:
+            if ".git" in file:adf
                 repo = Repo(insideFile)
                 # check if anything is untracked or changed
                 untracked = repo.untracked_files
