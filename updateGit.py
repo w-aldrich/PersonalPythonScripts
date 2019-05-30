@@ -1,4 +1,53 @@
-# Author: William Aldrich
+## Author: William Aldrich
+# Github: https://github.com/w-aldrich
+# Created: 05-23-18
+# Updated: 05-30-19
+
+# Helpful sites / sites that code is from
+# https://github.com/gitpython-developers/GitPython/issues/292
+# http://gitpython.readthedocs.io/en/stable/tutorial.html
+# https://stackoverflow.com/questions/11968976/list-files-in-only-the-current-directory?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+
+import os, sys, argparse
+from git import Repo
+from git import remote
+
+# Navigate to the folder that has your git repos inside of it
+# Mine is in my home directory so this is where everything takes place
+
+'''
+Setup of program
+Finds the home directory and all of the directories immediately inside that directory
+calls goThroughFolders() to do the heavy work
+Prints out whether or not all git repos are up to date or not after this program
+if not, will print out all repos that need to be updated
+'''
+def main(additionalDirectory=""):
+    # get home directory
+    home = os.environ['HOME']
+    # navigate to home directory
+    if(additionalDirectory != ""):
+        home = home + "/" + additionalDirectory
+    os.chdir(home)
+
+    # Get folders in current directory
+    # This should be able to find all git repos even if you add a new one
+    folders = [f for f in os.listdir('.') if not os.path.isfile(f)]
+
+    # Get whether or not everything is up to date as well as the folders that are not up to date
+    retVals = goThroughFolders(home, folders)
+
+    # flag for everything up to date
+    complete = retVals[0]
+    # list of incomplete folders
+    incompleteFolders = retVals[1]
+
+    # final print message stating everything is updated or up to date
+    if complete:
+        print ("\nAll git accounts have been updated or are up to date\n")
+    else:
+        print ("\nThe following folders are not up to date:") Author: William Aldrich
 # Github: https://github.com/w-aldrich
 # Created: 05-23-18
 # Updated: 09-27-18
