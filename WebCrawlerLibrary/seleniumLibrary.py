@@ -92,37 +92,45 @@ class SeleniumInteraction:
             element.send_keys(letter)
             time.sleep(.15)
 
-    def login(self, user_name_element, user_password_element, submit_button_element,
-              name_type='id', password_type='id', submit_type='id', submit_is_js=False):
-
-        enter_user_name = None
-
-        if isinstance(user_name_element, list):
-            enter_user_name = self.find_element_in_list(user_name_element, name_type)
-        else:
-            enter_user_name = self.find_element(user_name_element, name_type)
-
-        if enter_user_name is None:
-            print("Unable to find user_name_element: " + user_name_element)
-            print("Unable to log in")
-            return None
-
-        self.click_on_element(enter_user_name)
-        self.send_letters(self.user_name, enter_user_name)
-
-        enter_password = None
+    def enter_password(self, user_password_element, password_type):
+        enter_pass = None
         if isinstance(user_password_element, list):
-            enter_password = self.find_element_in_list(user_password_element, password_type)
+            enter_pass = self.find_element_in_list(user_password_element, password_type)
         else:
-            enter_password = self.find_element(user_password_element, password_type)
+            enter_pass = self.find_element(user_password_element, password_type)
 
-        if enter_password is None:
+        if enter_pass is None:
             print("Unable to find user_password_element: " + user_password_element)
             print("Unable to log in")
             return None
 
-        self.click_on_element(enter_password)
-        self.send_letters(self.password, enter_password)
+        self.click_on_element(enter_pass)
+        self.send_letters(self.password, enter_pass)
+        return "Able to enter password"
+
+    def login(self, user_name_element, user_password_element, submit_button_element,
+              name_type='id', password_type='id', submit_type='id', submit_is_js=False, try_password=False):
+        if not try_password:
+            enter_user_name = None
+            if isinstance(user_name_element, list):
+                enter_user_name = self.find_element_in_list(user_name_element, name_type)
+            else:
+                enter_user_name = self.find_element(user_name_element, name_type)
+
+            if enter_user_name is None:
+                print("Unable to find user_name_element: " + user_name_element)
+                print("Unable to log in")
+                return None
+
+            self.click_on_element(enter_user_name)
+            self.send_letters(self.user_name, enter_user_name)
+
+            password = self.enter_password(user_password_element, password_type)
+            if not password:
+                try_password = True
+        else:
+            self.enter_password(user_password_element, password_type)
+            try_password = False
 
         submit_button = None
         if isinstance(submit_button_element, list):
@@ -133,6 +141,9 @@ class SeleniumInteraction:
             self.click_on_js(submit_button)
         else:
             self.click_on_element(submit_button)
+
+        if try_password:
+            self.login(user_name_element, user_password_element, submit_button_element, name_type, password_type, submit_type, submit_is_js, try_password)
 
     def press_enter(self, element):
         element.send_keys(Keys.RETURN)
