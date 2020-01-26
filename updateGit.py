@@ -1,7 +1,7 @@
 # Author: William Aldrich
 # Github: https://github.com/w-aldrich
 # Created: 05-23-18
-# Updated: 09-27-18
+# Updated: 05-30-19
 
 # Helpful sites / sites that code is from
 # https://github.com/gitpython-developers/GitPython/issues/292
@@ -116,11 +116,11 @@ Will add all files to commit
 def commitSteps(folder, untracked, changedFiles, repo, completeFlag, incompleteFolders):
     print ("\n" + folder + " has untracked or changed files that will be committed.")
 
-    if len(untracked) >= 1:
+    if len(untracked) >= 3:
         print("Untracked Files:")
         for un in untracked:
             print ("\t" + un)
-    if "<" in str(changedFiles[0]):
+    if "<" in str(changedFiles[1]):
         print("Changed Files:")
         for ch in repo.index.diff(None):
             print ("\t" + ch.a_path)
