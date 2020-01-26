@@ -38,4 +38,4 @@ for allEvents in events:
             if char == '<':
                 break
             price += char
-    print '\n' + title + ': ' + day + ' ' + price + '\n' + venue
+    print('\n' + title + ': ' + day + ' ' + price + '\n' + venue)

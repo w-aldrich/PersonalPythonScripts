@@ -22,7 +22,7 @@ def alj():
     print("\nALJAZERA world headlines\nhttps://www.aljazeera.com/news/\n")
 
     for topic, headline in zip(topic_headlines, alj_headlines):
-        print topic + ": ", headline.get_text()
+        print (topic + ": ", headline.get_text())
 
 
 def nytimes():
