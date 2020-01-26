@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, datetime
 from bs4 import BeautifulSoup
 
 '''
@@ -19,44 +19,30 @@ def alj():
     for x in topic:
         topic_headlines.append(x.get_text())
 
-    print("\nALJAZERA OVERVIEW OF WORLD NEWS")
+    print("\nALJAZERA world headlines\nhttps://www.aljazeera.com/news/\n")
 
-    for place, headline in zip(topic_headlines, alj_headlines):
-        print place + ": ", headline.get_text()
+    for topic, headline in zip(topic_headlines, alj_headlines):
+        print topic + ": ", headline.get_text()
 
 
-# Need to fix NYTIMES
 def nytimes():
-    htmlNytimes = subprocess.check_output("curl -s \"https://www.nytimes.com\"", shell=True)
-    soup = BeautifulSoup(htmlNytimes, "html.parser")
-    nytimesHeadlines = soup.find_all('a')
+    nytimes_html = subprocess.check_output("curl -s \"https://www.nytimes.com/section/world\"", shell=True)
+    soup = BeautifulSoup(nytimes_html, "html.parser")
+    headline_date = {}
 
-    nytimesText = []
-    headlineCount = 0
-    startHeadlines = False
-    # loop through all 'a' tags remove unneeded white space and grab the correct headlines
-    for headline in nytimesHeadlines:
-        headline = headline.get_text().replace("\n", "").replace("\r", "").replace("\t", "")
-        headline = headline.encode('ascii',errors='ignore')
-        if 'T Magazine' in headline:
-            startHeadlines = True
-            continue
-        if startHeadlines == True:
-            if 'Comments' in headline or 'Subscribe' in headline or headline == '' or "Real Estate" in headline:
-                continue
-            if "Editorial:" in headline or headlineCount == 10:
-                break
-            nytimesText.append(headline)
-            # headlineCount += 1
+    for headline in soup.find_all('h2'):
+        try:
+            date = headline.find('a')['href']
+            if date.startswith('/2019'):
+                date = date.split("/")
+                date = '/'.join(date[:4])
+                headline_date[headline.text] = date[1:]
+        except:
+            headline_date[headline.text] = str(datetime.datetime.now()).split(" ")[0]
 
-    print "\nNEW YOURK TIMES TOP 10 HEADLINES"
-
-    for blah in nytimesText:
-        headlineCount += 1
-        print str(headlineCount) + ": " + blah
-        if headlineCount == 10:
-            break
-
+    print('\nNYTIMES world headlines\nhttps://www.nytimes.com/section/world\n')
+    for headline, date in headline_date.items():
+        print(date + "\t" + headline)
 
 if __name__ == '__main__':
     nytimes()

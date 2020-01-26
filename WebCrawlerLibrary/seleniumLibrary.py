@@ -16,33 +16,49 @@ class SeleniumInteraction:
         self.user_name = user_name
         self.password = password
 
+    '''
+        To find single element
+
+        find_element_by_id
+        find_element_by_name
+        find_element_by_xpath
+        find_element_by_link_text
+        find_element_by_partial_link_text
+        find_element_by_tag_name
+        find_element_by_class_name
+        find_element_by_css_selector
+
+        To find multiple elements (these methods will return a list):
+
+        find_elements_by_name
+        find_elements_by_xpath
+        find_elements_by_link_text
+        find_elements_by_partial_link_text
+        find_elements_by_tag_name
+        find_elements_by_class_name
+        find_elements_by_css_selector
+    '''
+    def return_none(self, element):
+        print("Unable to find: " + element)
+        return None
+
     def find_element(self, element, type='id', x_path_object=None):
-        if type == 'id':
-            try:
+        try:
+            if type == 'id':
                 return self.driver.find_element_by_id(element)
-            except:
-                print("Unable to find: " + element)
-                return None
-        elif type == 'class':
-            try:
+            elif type == 'class':
                 return self.driver.find_element_by_class_name(element)
-            except:
-                print("Unable to find: " + element)
-                return None
-        elif type == 'xpath':
-            if x_path_object is not None:
-                return x_path_object.find_element_by_xpath(element)
-            try:
-                return self.driver.find_element_by_xpath(element)
-            except:
-                print("Unable to find: " + element)
-                return None
-        elif type == 'name':
-            try:
+            elif type == 'xpath':
+                if x_path_object is not None:
+                    return x_path_object.find_element_by_xpath(element)
+                else:
+                    return self.driver.find_element_by_xpath(element)
+            elif type == 'name':
                 return self.driver.find_element_by_name(element)
-            except:
-                print("Unable to find: " + element)
-                return None
+            elif type == 'link':
+                return self.driver.find_element_by_link_text(element)
+        except Exception as e:
+            self.return_none(element)
 
     def find_element_in_list(self, element_list, type='id'):
         return_value = None
@@ -53,18 +69,22 @@ class SeleniumInteraction:
         return return_value
 
     def click_on_element(self, element):
+        if element is None:
+            raise Exception ("No Element to click on")
         try:
             self.action.move_to_element(element)
             time.sleep(.5)
             self.action.click(element)
             element.click()
-        except:
+        except Exception as e:
             print("Unable to click on: " + str(element))
 
     def click_on_js(self, element):
+        if element is None:
+            raise Exception ("No Element to click on")
         try:
             self.driver.execute_script("arguments[0].click();", element)
-        except:
+        except Exception as e:
             print("Unable to click on JavaScript: " + str(element))
 
     def send_letters(self, word, element):
@@ -108,11 +128,11 @@ class SeleniumInteraction:
         if isinstance(submit_button_element, list):
             submit_button = self.find_element_in_list(submit_button_element, submit_type)
         else:
-            submit_button = self.find_element(submit_button_element)
+            submit_button = self.find_element(submit_button_element, submit_type)
         if submit_is_js:
             self.click_on_js(submit_button)
         else:
-            self.click_on_element(submit_button, submit_type)
+            self.click_on_element(submit_button)
 
     def press_enter(self, element):
         element.send_keys(Keys.RETURN)
